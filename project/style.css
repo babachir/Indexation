@@ -1,0 +1,118 @@
+body, html, div,p {
+margin : 0px;
+padding:0px;
+}
+
+
+.wrapper
+{
+    width: 1000px;
+    min-height: 1200px;
+    margin:auto;
+    background-color: white;
+}
+
+body
+{
+ background-color: #F1F1F1;
+}
+.head
+{
+ background-color: #FF530D ;
+ height: 40px;
+ width:100%;  
+}
+
+.head div
+{
+    display: inline-block;
+    border-right: 3px solid white;
+    color: white;
+    height: 40px;
+    line-height: 36px;
+    font-family: helvetica;
+    padding-left: 20px;
+}
+
+#title
+{
+width: 600px;
+}
+
+#link
+{
+    width: 161px;
+}
+
+#view
+{
+   width: 161px;
+   border: none;
+}
+
+.content
+{
+    
+    width: 100%;
+    min-height: 1200px;
+}
+
+.cloud li
+{
+    display: inline-block;
+        margin: 0px 3px;
+}
+
+.content .title
+{
+    height: 40px;
+    width: 607px;   
+    line-height: 37px;
+    border-bottom: 1px solid #F1F1F1;
+    border-right: 4px solid #FF530D;
+    padding-left: 13px;
+    display: inline-block;
+}
+
+.content .link
+{
+    height: 40px;
+    width: 166px;   
+    line-height: 37px;
+    border-bottom: 1px solid #F1F1F1;
+    border-right: 4px solid #FF530D;
+    padding-left: 13px;
+    display: inline-block;
+}
+
+.content .view
+{
+    height: 40px;
+    width: 166px;   
+    line-height: 37px;
+    border-bottom: 1px solid #F1F1F1;
+    padding-left: 13px;
+    display: inline-block;
+}
+
+ul .link1 {
+color: #0D4CFF;
+}
+ul .link2 {
+color: #5C0CE8
+}
+ul .link3 {
+color: #FF00FE;
+}
+
+ul .link4 {
+color: #E8170C;
+}
+
+ul .link5 {
+color: #FF0DFF;
+}
+
+ul .link6 {
+color: #7C0DFF;
+}
