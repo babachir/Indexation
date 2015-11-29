@@ -14,7 +14,7 @@ padding:0px;
 {
     display: inline-block;
     width: 93px;
-    height: 30px;
+    height: 40px;
     text-align: center;
     line-height: 30px;
     text-decoration: none;
@@ -24,6 +24,17 @@ padding:0px;
     font-size: 18px;
     font-family: helvetica;
     border-radius: 4px;
+}
+
+.aBtIndex
+{
+    box-shadow: 0px 2px 1px 1px rgba(0, 0, 0, 0.6);
+    width: 94px;
+    height: 36px;
+    margin: 0px 0px;
+    padding-top: 0px;
+    line-height: 38px;
+    border-radius: 1px;
 }
 
 #form1

@@ -132,22 +132,52 @@ function getDocs()
 }
 
 
-function search($word)
+function getDoc($id)
 {
     global $conn;
     $tab_returned = array();
-    $sql = "SELECT id_doc, MAX(poids) FROM `doc_mot`,`mot` WHERE mot.mot ='".$word."' AND mot.id_mot=doc_mot.id_mot GROUP BY id_doc LIMIT 1";
+    $sql = "SELECT * FROM document WHERE id_doc=".$id;
     //echo $sql;
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $tab_returned[] = $row;
+            $address = $row;
 
 
         }
         
-        return  $tab_returned;
+        return  $address;
 
+
+    } else {
+        return false;
+    }
+}
+
+
+
+
+function search($word)
+{
+    global $conn;
+    $tab_returned = array();
+    $sql = "SELECT id_doc, MAX(poids) FROM `doc_mot`,`mot` WHERE mot.mot ='".$word."' AND mot.id_mot=doc_mot.id_mot GROUP BY id_doc";
+    //echo $sql;
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $tab_id_doc[] = $row['id_doc'];
+
+
+        }
+        
+        
+         
+        $tab_add= array();
+         foreach ($tab_id_doc as  $id_doc) {
+             $tab_add[] = getDoc($id_doc);
+         }
+         return $tab_add;
 
     } else {
         return false;
@@ -175,6 +205,49 @@ function getWord($id)
 
     	}
     }	
+
+    return $tab_returned;
+
+}
+
+
+function getAllWord()
+{
+
+    global $conn;
+    $tab_returned= null;
+
+
+    $sql = "SELECT * FROM  mot";
+    $result = $conn->query($sql);
+    if($result->num_rows >0)
+    {   
+        while ($row = $result->fetch_assoc()) {
+            $tab_returned[] = $row;
+
+        }
+    }   
+
+    return $tab_returned;
+
+}
+
+function getPoids($id_mot)
+{
+
+    global $conn;
+    $tab_returned= null;
+
+
+    $sql = "SELECT sum(poids) FROM `doc_mot` WHERE id_mot=".$id_mot;
+    $result = $conn->query($sql);
+    if($result->num_rows >0)
+    {   
+        while ($row = $result->fetch_assoc()) {
+            return $row['sum(poids)'];
+
+        }
+    }   
 
     return $tab_returned;
 

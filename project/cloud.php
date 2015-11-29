@@ -28,7 +28,7 @@ $words = getWord($_GET["id"]);
 	<ul class="cloud" style="list-style-type : none;">
 		<?php foreach ($words as $word):?>
 
-			<li class="link<?php echo $word['poids']%7?>" style="font-size:<?php echo 6+(10*$word['poids']);?>px;"><?php echo utf8_encode($word["mot"]);?> </li>
+			<a style="text-decoration:none;" href="index.php?word=<?php echo utf8_encode($word["mot"]);?>"> <li class="link<?php echo $word['poids']%7?>" style="font-size:<?php echo 6+(10*$word['poids']);?>px;"><?php echo utf8_encode($word["mot"]);?> </li></a>
 
 		<?php endforeach; ?>
 	</ul>

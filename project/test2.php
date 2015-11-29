@@ -1,7 +1,6 @@
 <?php
 
-var_dump( "    emulateur");
-var_dump( trim("    emulateur"));
+
 
 
 
