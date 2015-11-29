@@ -47,7 +47,9 @@ function explodeBIS($separateurs , $chaine)
 	while ($tok != false)
 	{
 		$tok=strtok($separateurs);
-		if(strlen($tok) >2)  $tab_mots[] = $tok;
+		/*test si le mot est vide ou pas ici */
+		
+		if(strlen($tok) >2)  $tab_mots[] = trim ($tok,"\t\n\r\0\x0B" );
 	}
 	return $tab_mots;
 }
@@ -85,13 +87,60 @@ function get_title_With_ER($file){
 	return $title[1];
 }
 
+
+//retourne l'encodage d'une chaien de caractère 
+
+function detectEncodage($chaine)
+{
+
+ if(mb_detect_encoding($chaine, "iso-8859-1")!=false)
+ {
+ 	return "iso-8859-1";
+ }
+ else if(mb_detect_encoding($chaine, "iso-8859-15")!=false)
+ {
+ 	return "iso-8859-15";
+
+ }
+ else if (mb_detect_encoding($chaine, "UTF-8")!=false)
+
+ {
+ 	return "UTF-8";
+ }
+
+ else 
+ 	return false;
+
+}
+
+
+
+
 // remplacer les cars html par leurs vraie présentation
 function entitesHTML2Caracts($chaine_html_entites)
 {	
-	$table_caracts_html   = get_html_translation_table(HTML_ENTITIES);
+	
+	$chaine_html_entites = str_replace("&nbsp;", ")", $chaine_html_entites);
+
+	//var_dump($chaine_html_entites);
+
+	$table_caracts_html   = get_html_translation_table(HTML_ENTITIES);	
 	$tableau_html_caracts = array_flip ( $table_caracts_html );
 	$chaine_html_caracts  = strtr ($chaine_html_entites, $tableau_html_caracts );
 
+
+
+	if(detectEncodage($chaine_html_caracts))
+	{
+	$encodage_chaine_entrer = detectEncodage($chaine_html_caracts); 
+	$chaine_html_caracts = mb_convert_encoding($chaine_html_caracts,$encodage_chaine_entrer,'UTF-8');
+	
+
+
+	}
+
+	
+   
 	return $chaine_html_caracts;
 }
 
@@ -121,7 +170,7 @@ function get_Body($file){
 // suppression des scripts dans le body
 function strip_scripts($chaine){
 	$modele = '/<script[^>]*?>.*?<\/script>/is';
-	$html = preg_replace($modele, ' ',$chaine);
+	$html = preg_replace($modele, '',$chaine);
 	return $html;
 }
 
@@ -166,6 +215,8 @@ function fusion_tabH_tabB($tab , $tab2)
 
 function fusion_tabH_tabB_tabV($tab , $tab2, $mot_vides)
 {
+
+	
 	if( count($tab>$tab2)){
 		$tab_court=$tab2;
 		$tab_long=$tab;
@@ -179,7 +230,7 @@ function fusion_tabH_tabB_tabV($tab , $tab2, $mot_vides)
 	foreach( $tab_court as $mot=>$occ)
 	{
 		
-		if(!in_array($mot, $mot_vides)){
+		if(!in_array(utf8_encode($mot), $mot_vides)){
 			if(array_key_exists ($mot ,$tab_long))
 			{
 					$tab_long[$mot] += $occ;
@@ -200,7 +251,7 @@ function get_mot_vides($file)
 
 	//les separateurs pour decouper le texte en mots
 	$separateurs=" \n";
-	$mot_vide = entitesHTML2Caracts($chaine);
+	$mot_vide = utf8_decode(entitesHTML2Caracts($chaine));
 	$empty_word=explodeBIS ($separateurs , $mot_vide);
 
 	return $empty_word;	
@@ -221,4 +272,28 @@ function chargerDICO($file)
 	
 	return $tab_mot_vides;
 }
+
+
+function cleanChaine($mystring)
+{
+
+
+	
+	if(preg_match( "#[?/\&><]#", $mystring )==1)
+	{
+		return true;
+	}
+
+
+
+
+
+
+	
+return false;
+
+}
+
+
+
 ?>

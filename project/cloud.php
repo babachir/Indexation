@@ -8,15 +8,16 @@ include "bddconnect.php";
 $words = getWord($_GET["id"]);
 
 
+
 ?>
 
 
 <html>
 
 <head>
-	    <meta charset="UTF-8" />
         <title> cloud </title>
         <link rel="stylesheet" href="style.css" />
+		<meta charset="utf-8">
 </head>
 
 <body>
@@ -27,7 +28,7 @@ $words = getWord($_GET["id"]);
 	<ul class="cloud" style="list-style-type : none;">
 		<?php foreach ($words as $word):?>
 
-			<li class="link<?php echo $word['poids']%7?>" style="font-size:<?php echo 6+(10*$word['poids']);?>px;"><?=$word['mot']?> </li>
+			<li class="link<?php echo $word['poids']%7?>" style="font-size:<?php echo 6+(10*$word['poids']);?>px;"><?php echo utf8_encode($word["mot"]);?> </li>
 
 		<?php endforeach; ?>
 	</ul>

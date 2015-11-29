@@ -53,7 +53,7 @@ function createMot($data)
 
     if ($data["mot"] != "") {
 
-        $sql = "SELECT id_mot from mot where mot ='" . $data["mot"] . "'";
+        $sql = "SELECT id_mot from mot where TRIM(mot) ='".$data["mot"]."'";
         $id_doc = $conn->query($sql);
         while ($row = $id_doc->fetch_assoc()) {
             $id_mot = $row["id_mot"];
@@ -61,8 +61,10 @@ function createMot($data)
 
 
         if ($id_mot == null) {
-            $sql = "INSERT INTO mot (mot) VALUES ('" . $data["mot"] . "')";
-
+            /*str_replace(CHR(32),"",$chaine)*/
+            $sql = "INSERT INTO mot (mot) VALUES (TRIM('".str_replace("\t\n\r","",$data["mot"])."'))";
+            
+            
             if ($conn->query($sql) === TRUE) {
                 echo "New word created successfully <br/>";
                 $sql = "SELECT MAX(id_mot) last_id from mot";
@@ -128,6 +130,30 @@ function getDocs()
         return false;
     }
 }
+
+
+function search($word)
+{
+    global $conn;
+    $tab_returned = array();
+    $sql = "SELECT id_doc, MAX(poids) FROM `doc_mot`,`mot` WHERE mot.mot ='".$word."' AND mot.id_mot=doc_mot.id_mot GROUP BY id_doc LIMIT 1";
+    //echo $sql;
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $tab_returned[] = $row;
+
+
+        }
+        
+        return  $tab_returned;
+
+
+    } else {
+        return false;
+    }
+}
+
 
 
 /*   $sql = "SELECT mot.mot FROM mot_doc, mot WHERE mot_doc.id_doc ='".$id."' AND mot_doc.id_mot=mot.id_mot";*/

@@ -3,7 +3,42 @@ margin : 0px;
 padding:0px;
 }
 
+#barsearhc
+{
+        width: 100%;
+    height: 35px;
+    margin: 13px 0px;
+}
 
+.btindex
+{
+    display: inline-block;
+    width: 93px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    text-decoration: none;
+    background-color: #EC6D36;
+    color: wheat;
+    font-weight: bolder;
+    font-size: 18px;
+    font-family: helvetica;
+    border-radius: 4px;
+}
+
+#form1
+{
+    width: 561px;
+    margin: 12px auto;
+}
+
+.logoindex
+{
+    width: 304px;
+    margin: 0px auto;
+    display: inherit;
+    padding-top: 118px;
+}
 .wrapper
 {
     width: 1000px;

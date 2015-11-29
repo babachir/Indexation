@@ -1,15 +1,10 @@
 <?php
 
-include "module_index_head.php";
-include "bddconnect.php";
 
 
-
-$docs = getDocs();
 
 
 ?>
-
 
 <html>
 
@@ -21,36 +16,26 @@ $docs = getDocs();
 
 <body>
 
-
 	<div class="wrapper">
-		<div class="head"> <div id="title"> Title </div> <div id="link"> Link</div> <div id="view">  keyword cloud</div> </div>
-	
-		<div class="content">
-			
-			<?php  foreach ($docs as  $doc): ?>
+
+	<div>
+		<img class="logoindex" src="img/logo.png" />
 
 
-				<div class="title">
-				<?=$doc['title']?>
-				</div>
-				<div class="link">
-				<a href="<?=$doc['adr']?>" target="_blank"> Consult the link</a>
-				</div>
-				<div class="view">
-				<a href="cloud.php?id=<?=$doc['id_doc']?>" target="_blank"> Consult the cloud</a>
-				</div> 
+	</div>
 
+	<form method="post" action="http://localhost/sf2-exercise-candidate2/web/app_dev.php/knight" id="form1">
+	   <p><input id="barsearhc" type="text" name="word" /></p>
 
-			<?php endforeach;?>
+	   <div style="width: 191px;margin: auto;">
+			<a class="btindex" type="submit" form="form1" value="Submit" href="#" >Search </a>
+			<a class="btindex"  form="form1"  href="#" > Cloud </a>
 		</div>
-
-	
+	</form>
 
 	</div>
 
 
-
-
-
 </body>
+
 </html>
