@@ -1,128 +1,120 @@
-
-
 <?php
 include "bibliotheque.inc.php";
 include_once 'connect.php';
 
 
- 
-
 function indexer($file, $tab_mot_vide)
 {
-	global $conn;
+    global $conn;
 
-	//______________________ traitement head________________________
-	$title = get_title_With_ER($file);
-	$keywords = get_meta_keywords($file);
-	$description = get_meta_description($file);
-	$chaine_head = $keywords . " " . $description . " ";
+    //______________________ traitement head________________________
+    $title = get_title_With_ER($file);
+    $keywords = get_meta_keywords($file);
+    $description = get_meta_description($file);
+    $chaine_head = $keywords . " " . $description . " ";
 
-	// conversion entites html ascii
-	$chaine_head = entitesHTML2Caracts($chaine_head);
+    // conversion entites html ascii
+    $chaine_head = entitesHTML2Caracts($chaine_head);
 
-	//minuscule
-	$chaine=strtolower($chaine_head);
+    //minuscule
+    $chaine = strtolower($chaine_head);
 
-	//les separateurs pour decouper le texte en mots
-	$separateurs=" {}[])(-_;,:.'’»«$";
+    //les separateurs pour decouper le texte en mots
+    $separateurs = " {}[])(-_;,:.'’»«$";
 
-	//decoupage du texte en elements/mots
-	$tab_mots_head=explodeBIS ($separateurs , $chaine);
+    //decoupage du texte en elements/mots
+    $tab_mots_head = explodeBIS($separateurs, $chaine);
 
-	//affichage des mots
-	//print_tab($tab_mots);
-	//echo "<br><br>";
-
-
-	//calcul de la frequence des mots 
-	//suppression des doublons
-	$tab_mots_occurrences_head = array_count_values($tab_mots_head);
-	//print_tab($tab_mots_occurrences);
-
-	// calcul du poids des mots
-	$tab_mots_poids_head = occ2poids($tab_mots_occurrences_head, 2);
-	//print_tab($tab_mots_poids_head);
-
-	//______________________ Fin traitement head________________________
+    //affichage des mots
+    //print_tab($tab_mots);
+    //echo "<br><br>";
 
 
-	//______________________ traitement body________________________
-	 
-	 
-	$body = get_Body($file);
+    //calcul de la frequence des mots
+    //suppression des doublons
+    $tab_mots_occurrences_head = array_count_values($tab_mots_head);
+    //print_tab($tab_mots_occurrences);
+
+    // calcul du poids des mots
+    $tab_mots_poids_head = occ2poids($tab_mots_occurrences_head, 2);
+    //print_tab($tab_mots_poids_head);
+
+    //______________________ Fin traitement head________________________
 
 
-	// body sans balises scripts
-	$body_sans_scripts = strip_scripts($body);
-
-	// suppression des balises html
-	$clean_body = strip_tags($body_sans_scripts);
-
-	// conversion entites html ascii
+    //______________________ traitement body________________________
 
 
-	$clean_body = entitesHTML2Caracts($clean_body);
-	 
-	
-
-	 //minuscule
-	$clean_body=strtolower($clean_body);
+    $body = get_Body($file);
 
 
-	//les separateurs pour decouper le texte en mots
-	$separateurs=" {}[])(-_;,:.'’»«$!?\"";
+    // body sans balises scripts
+    $body_sans_scripts = strip_scripts($body);
 
-	//decoupage du texte en elements/mots
-	$tab_mots_body=explodeBIS ($separateurs , $clean_body);
+    // suppression des balises html
+    $clean_body = strip_tags($body_sans_scripts);
 
-
-	//affichage des mots
-	//print_tab($tab_mots);
-	//echo "<br><br>";
+    // conversion entites html ascii
 
 
-	//calcul de la frequence des mots 
-	//suppression des doublons
-	$tab_mots_occurrences_body = array_count_values($tab_mots_body);
-
-	//print_tab($tab_mots_occurrences);
-
-	// calcul du poids des mots
-	$tab_mots_poids_body = $tab_mots_occurrences_body;
-	//print_tab($tab_mots_poids_body);
-
-	//________________________ fin traitement body ______________________
+    $clean_body = entitesHTML2Caracts($clean_body);
 
 
-	// fusion des deux tableaux
-	$tab_mots_poids = fusion_tabH_tabB_tabV($tab_mots_poids_head, $tab_mots_poids_body, $tab_mot_vide );
-	//print_tab($tab_mots_poids);
+    //minuscule
+    $clean_body = strtolower($clean_body);
 
 
-	//création du doccument dans la BDD
+    //les separateurs pour decouper le texte en mots
+    $separateurs = " {}[])(-_;,:.'’»«$!?\"";
+
+    //decoupage du texte en elements/mots
+    $tab_mots_body = explodeBIS($separateurs, $clean_body);
 
 
-	$data = array('adr' =>mysqli_real_escape_string($conn, $file),
-				  'title' => mysqli_real_escape_string($conn, $title),
-				  'description' => mysqli_real_escape_string($conn, $description) );
-	$id_doc = createDoc($data);
+    //affichage des mots
+    //print_tab($tab_mots);
+    //echo "<br><br>";
 
 
+    //calcul de la frequence des mots
+    //suppression des doublons
+    $tab_mots_occurrences_body = array_count_values($tab_mots_body);
 
-	foreach ($tab_mots_poids as $mot => $poids)
-	{
+    //print_tab($tab_mots_occurrences);
 
-		if(!cleanChaine($mot))
-		{
+    // calcul du poids des mots
+    $tab_mots_poids_body = $tab_mots_occurrences_body;
+    //print_tab($tab_mots_poids_body);
 
-		$data = array('id_doc' =>mysqli_real_escape_string($conn, $id_doc),
-					  'mot' => mysqli_real_escape_string($conn,trim($mot)),
-					  'poids' => mysqli_real_escape_string($conn, $poids) );
+    //________________________ fin traitement body ______________________
 
-		createMot($data);
-		}
-	}
-	 
+
+    // fusion des deux tableaux
+    $tab_mots_poids = fusion_tabH_tabB_tabV($tab_mots_poids_head, $tab_mots_poids_body, $tab_mot_vide);
+    //print_tab($tab_mots_poids);
+
+
+    //création du doccument dans la BDD
+
+
+    $data = array('adr' => mysqli_real_escape_string($conn, $file),
+        'title' => mysqli_real_escape_string($conn, $title),
+        'description' => mysqli_real_escape_string($conn, $description));
+    $id_doc = createDoc($data);
+
+
+    foreach ($tab_mots_poids as $mot => $poids) {
+
+        if (!cleanChaine($mot)) {
+
+            $data = array('id_doc' => mysqli_real_escape_string($conn, $id_doc),
+                'mot' => mysqli_real_escape_string($conn, trim($mot)),
+                'poids' => mysqli_real_escape_string($conn, $poids));
+
+            createMot($data);
+        }
+    }
+
 }
 
 

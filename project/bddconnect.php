@@ -10,22 +10,19 @@ function createDoc($data)
     $id_doc = null;
 
 
-    $sql = "SELECT * from document where adr ='". $data["adr"] ."'";
+    $sql = "SELECT * from document where adr ='" . $data["adr"] . "'";
     $result = $conn->query($sql);
-    if ($result && $result->num_rows )
-    {
-	    while ($row = $result->fetch_assoc()) {
-	    $id_doc = $row["id_doc"];
-	    }
+    if ($result && $result->num_rows) {
+        while ($row = $result->fetch_assoc()) {
+            $id_doc = $row["id_doc"];
+        }
 
-	    if($id_doc!=null)
-	    {
-	    	return $id_doc;
-	    }
+        if ($id_doc != null) {
+            return $id_doc;
+        }
 
-	}
-	else
-	 echo "Error: " . $sql . "<br>" . $conn->error . " <br/> ";		
+    } else
+        echo "Error: " . $sql . "<br>" . $conn->error . " <br/> ";
 
     if ($data["adr"] != "" && $data["title"] != "") {
         $sql = "INSERT INTO document (adr, title, description)
@@ -53,7 +50,7 @@ function createMot($data)
 
     if ($data["mot"] != "") {
 
-        $sql = "SELECT id_mot from mot where TRIM(mot) ='".$data["mot"]."'";
+        $sql = "SELECT id_mot from mot where TRIM(mot) ='" . $data["mot"] . "'";
         $id_doc = $conn->query($sql);
         while ($row = $id_doc->fetch_assoc()) {
             $id_mot = $row["id_mot"];
@@ -62,9 +59,9 @@ function createMot($data)
 
         if ($id_mot == null) {
             /*str_replace(CHR(32),"",$chaine)*/
-            $sql = "INSERT INTO mot (mot) VALUES (TRIM('".str_replace("\t\n\r","",$data["mot"])."'))";
-            
-            
+            $sql = "INSERT INTO mot (mot) VALUES (TRIM('" . str_replace("\t\n\r", "", $data["mot"]) . "'))";
+
+
             if ($conn->query($sql) === TRUE) {
                 echo "New word created successfully <br/>";
                 $sql = "SELECT MAX(id_mot) last_id from mot";
@@ -77,7 +74,7 @@ function createMot($data)
                         //echo "New relation mot_doc created successfully <br/>";
 
                     } else {
-                      //  echo "Error: " . $sql . "<br>" . $conn->error . " <br/> ";
+                        //  echo "Error: " . $sql . "<br>" . $conn->error . " <br/> ";
                     }
 
 
@@ -98,7 +95,7 @@ function createMot($data)
                 echo "New relation mot_doc created successfully 2 <br/>";
 
             } else {
-              //  echo "Error: " . $sql . "<br>" . $conn->error . " <br/> ";
+                //  echo "Error: " . $sql . "<br>" . $conn->error . " <br/> ";
             }
 
 
@@ -122,8 +119,8 @@ function getDocs()
 
 
         }
-        
-        return  $tab_returned;
+
+        return $tab_returned;
 
 
     } else {
@@ -136,7 +133,7 @@ function getDoc($id)
 {
     global $conn;
     $tab_returned = array();
-    $sql = "SELECT * FROM document WHERE id_doc=".$id;
+    $sql = "SELECT * FROM document WHERE id_doc=" . $id;
     //echo $sql;
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -145,8 +142,8 @@ function getDoc($id)
 
 
         }
-        
-        return  $address;
+
+        return $address;
 
 
     } else {
@@ -155,13 +152,11 @@ function getDoc($id)
 }
 
 
-
-
 function search($word)
 {
     global $conn;
     $tab_returned = array();
-    $sql = "SELECT id_doc, MAX(poids) FROM `doc_mot`,`mot` WHERE mot.mot ='".$word."' AND mot.id_mot=doc_mot.id_mot GROUP BY id_doc";
+    $sql = "SELECT id_doc, MAX(poids) FROM `doc_mot`,`mot` WHERE mot.mot ='" . $word . "' AND mot.id_mot=doc_mot.id_mot GROUP BY id_doc";
     //echo $sql;
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -170,20 +165,18 @@ function search($word)
 
 
         }
-        
-        
-         
-        $tab_add= array();
-         foreach ($tab_id_doc as  $id_doc) {
-             $tab_add[] = getDoc($id_doc);
-         }
-         return $tab_add;
+
+
+        $tab_add = array();
+        foreach ($tab_id_doc as $id_doc) {
+            $tab_add[] = getDoc($id_doc);
+        }
+        return $tab_add;
 
     } else {
         return false;
     }
 }
-
 
 
 /*   $sql = "SELECT mot.mot FROM mot_doc, mot WHERE mot_doc.id_doc ='".$id."' AND mot_doc.id_mot=mot.id_mot";*/
@@ -193,18 +186,17 @@ function getWord($id)
 {
 
     global $conn;
-    $tab_returned= null;
+    $tab_returned = null;
 
 
     $sql = "SELECT mot.mot, doc_mot.poids FROM doc_mot, mot WHERE doc_mot.id_doc ='" . $id . "' AND doc_mot.id_mot=mot.id_mot";
     $result = $conn->query($sql);
-    if($result->num_rows >0)
-    {	
-    	while ($row = $result->fetch_assoc()) {
-        	$tab_returned[] = $row;
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $tab_returned[] = $row;
 
-    	}
-    }	
+        }
+    }
 
     return $tab_returned;
 
@@ -215,18 +207,17 @@ function getAllWord()
 {
 
     global $conn;
-    $tab_returned= null;
+    $tab_returned = null;
 
 
     $sql = "SELECT * FROM  mot";
     $result = $conn->query($sql);
-    if($result->num_rows >0)
-    {   
+    if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $tab_returned[] = $row;
 
         }
-    }   
+    }
 
     return $tab_returned;
 
@@ -236,18 +227,17 @@ function getPoids($id_mot)
 {
 
     global $conn;
-    $tab_returned= null;
+    $tab_returned = null;
 
 
-    $sql = "SELECT sum(poids) FROM `doc_mot` WHERE id_mot=".$id_mot;
+    $sql = "SELECT sum(poids) FROM `doc_mot` WHERE id_mot=" . $id_mot;
     $result = $conn->query($sql);
-    if($result->num_rows >0)
-    {   
+    if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             return $row['sum(poids)'];
 
         }
-    }   
+    }
 
     return $tab_returned;
 
