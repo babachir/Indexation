@@ -54,32 +54,45 @@ include "bddconnect.php";
         if (isset($_GET['word']))
             $docs = search($_GET['word']);
 
+        //var_dump($docs);
         ?>
         <div class="result">
 
             <div class="head">
-                <div id="title"> Title</div>
-                <div id="link"> Link</div>
+                <div id="title" style="    width: 792px;">Number of results (<?php if($docs!=false) {echo count($docs);} else echo 0; ?>) </div>
                 <div id="view"> keyword cloud</div>
             </div>
 
             <div class="content">
+                
+                <?php if($docs!=false):?>
+                    <?php foreach ($docs as $doc): ?>
 
-                <?php foreach ($docs as $doc): ?>
+                        <a href="<?= $doc['adr'] ?>" target="_blank">
+                            <div  style="height: 95px;width: 799px;line-height: 19px;" class="title">
+                                <?= $doc['title'] ?><br/>
+                                 <p style="font-style: italic; color:black;">description : <?php if($doc['description']!='')  {echo $doc['description'];} else {echo "no description";}?></p>
+                            </div>
+                        </a>
+                        <div class="view" style="    height: 95px;">
+                            <a href="cloud.php?id=<?= $doc['id_doc'] ?>" target="_blank"> Consult the cloud</a>
+                        
+                        </div>
 
 
-                    <div class="title">
-                        <?= $doc['title'] ?>
-                    </div>
-                    <div class="link">
-                        <a href="<?= $doc['adr'] ?>" target="_blank"> Consult the link</a>
-                    </div>
-                    <div class="view">
-                        <a href="cloud.php?id=<?= $doc['id_doc'] ?>" target="_blank"> Consult the cloud</a>
-                    </div>
+                    <?php endforeach; ?>
+                <?php else:?>
+                    
+                        
+                            <div  style="width: 799px;" class="title">
+                                No result 
+                            </div>
+                      
+                        <div class="view">
+                            
+                        </div>                
 
-
-                <?php endforeach; ?>
+                <?php endif;?>
             </div>
 
 

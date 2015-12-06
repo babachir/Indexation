@@ -20,7 +20,7 @@ function indexer($file, $tab_mot_vide)
     $chaine = strtolower($chaine_head);
 
     //les separateurs pour decouper le texte en mots
-    $separateurs = " {}[])(-_;,:.'’»«$";
+    $separateurs = " |{}[])(-_;,:.'’»«$!?\"*\/&=#";
 
     //decoupage du texte en elements/mots
     $tab_mots_head = explodeBIS($separateurs, $chaine);
@@ -65,7 +65,7 @@ function indexer($file, $tab_mot_vide)
 
 
     //les separateurs pour decouper le texte en mots
-    $separateurs = " {}[])(-_;,:.'’»«$!?\"";
+    $separateurs = " |{}[])(-_;,:.'’»«$!?\"*\/&=#";
 
     //decoupage du texte en elements/mots
     $tab_mots_body = explodeBIS($separateurs, $clean_body);
