@@ -40,7 +40,7 @@ include "bddconnect.php";
 
         <div style="width: 191px;margin: auto;">
             <input class="btindex" type="submit" form="form1" value="Search"/>
-            <a class="btindex aBtIndex" value="Cloud" href="#"> Cloud </a>
+            <a class="btindex aBtIndex" value="Cloud" href="bigCloud.php"> Cloud </a>
         </div>
     </form>
 
@@ -50,9 +50,9 @@ include "bddconnect.php";
         <?php
 
         if (isset($_POST['word']))
-            $docs = search($_POST['word']);
+            $docs = search(utf8_decode($_POST['word']));
         if (isset($_GET['word']))
-            $docs = search($_GET['word']);
+            $docs = search(utf8_decode($_GET['word']));
 
         //var_dump($docs);
         ?>
@@ -64,17 +64,17 @@ include "bddconnect.php";
             </div>
 
             <div class="content">
-                
+                <?php $i=0; ?>
                 <?php if($docs!=false):?>
                     <?php foreach ($docs as $doc): ?>
 
-                        <a href="<?= $doc['adr'] ?>" target="_blank">
+                        <a id="a<?php echo $i?>" href="<?= $doc['adr'] ?>" target="_blank">
                             <div  style="height: 95px;width: 799px;line-height: 19px;" class="title">
                                 <?= $doc['title'] ?><br/>
                                  <p style="font-style: italic; color:black;">description : <?php if($doc['description']!='')  {echo $doc['description'];} else {echo "no description";}?></p>
                             </div>
                         </a>
-                        <div class="view" style="    height: 95px;">
+                        <div id="div<?php echo $i?>" class="view" style="    height: 95px;">
                             <a href="cloud.php?id=<?= $doc['id_doc'] ?>" target="_blank"> Consult the cloud</a>
                         
                         </div>
@@ -104,5 +104,7 @@ include "bddconnect.php";
 
 
 </body>
+
+
 
 </html>
